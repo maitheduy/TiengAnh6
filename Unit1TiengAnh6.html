@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1: Home - Interactive English Lesson</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .lesson-content {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .left-column {
+            flex: 1;
+            min-width: 300px;
+        }
+        .right-column {
+            flex: 1;
+            min-width: 300px;
+        }
+        .lesson-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        .audio-player {
+             margin-bottom: 20px;
+        }
+        .transcript {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .transcript p { margin: 5px 0; }
+        .transcript strong { color: #007bff; }
+        .quiz-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .quiz-item {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .quiz-item input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            margin-left: 5px;
+            width: 150px;
+        }
+        .quiz-item input.correct {
+            border-color: #28a745;
+            background-color: #e9f7ef;
+        }
+        .quiz-item input.incorrect {
+            border-color: #dc3545;
+            background-color: #fce8e6;
+        }
+        .check-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .check-button:hover { background-color: #0056b3; }
+        #feedback {
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .conversation-skill {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e7f3fe;
+            border-left: 5px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Unit 1: Home – Lesson 1</h1>
+
+        <div class="lesson-content">
+            <div class="left-column">
+                <h2>Listening & Reading</h2>
+                
+                <!-- ĐÃ CẬP NHẬT LINK ẢNH TẠI ĐÂY -->
+                <img src="https://i.postimg.cc/bwmn87TR/Screenshot-2025-07-31-at-19-31-12.png" alt="Lesson Image" class="lesson-image">
+                
+                <div class="audio-player">
+                    <iframe width="100%" height="60" src="https://vocaroo.com/embed/1kuA2Gt1mwiZ?autoplay=0" frameborder="0" allow="autoplay"></iframe>
+                </div>
+
+                <div class="conversation-skill">
+                    <h3>Conversation Skill: Getting someone's attention</h3>
+                    <p>To get someone's attention, say: <strong>Excuse me.</strong></p>
+                </div>
+            </div>
+
+            <div class="right-column">
+                 <h2>Conversation Transcript</h2>
+                <div class="transcript">
+                    <p><strong>Jenny:</strong> Excuse me. Could I ask you some questions?</p>
+                    <p><strong>Jim:</strong> Oh, you're in class 6A, aren't you?</p>
+                    <p><strong>Jenny:</strong> Yes, that's right. My name's Jenny. I'm doing a survey for my geography class.</p>
+                    <p><strong>Jim:</strong> My name's Jim. What do you want to know?</p>
+                    <p><strong>Jenny:</strong> Thank you, Jim. Do you live in a house?</p>
+                    <p><strong>Jim:</strong> No, I don't. I live in an apartment.</p>
+                    <p><strong>Jenny:</strong> How many bedrooms does it have?</p>
+                    <p><strong>Jim:</strong> Two.</p>
+                    <p><strong>Jenny:</strong> Does it have a pool?</p>
+                    <p><strong>Jim:</strong> Yes, a small one.</p>
+                    <p><strong>Jenny:</strong> Does it have a garage?</p>
+                    <p><strong>Jim:</strong> No, it doesn't.</p>
+                    <p><strong>Jenny:</strong> Does it have a gym?</p>
+                    <p><strong>Jim:</strong> Yes, it does. There's a gym in the basement.</p>
+                    <p><strong>Jenny:</strong> Does it have a balcony?</p>
+                    <p><strong>Jim:</strong> Yes, it does. I can see the city from it.</p>
+                    <p><strong>Jenny:</strong> Great! Thank you for your help.</p>
+                    <p><strong>Jim:</strong> You're welcome.</p>
+                    <p><strong>Jenny:</strong> Goodbye.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2>b. Now, fill in the blanks.</h2>
+            <div id="quiz-form">
+                <div class="quiz-item">
+                    1. The boy lives in <input type="text" id="answer1">.
+                </div>
+                <div class="quiz-item">
+                    2. It has two <input type="text" id="answer2">.
+                </div>
+                <div class="quiz-item">
+                    3. It has a small <input type="text" id="answer3">.
+                </div>
+                <div class="quiz-item">
+                    4. It doesn't have <input type="text" id="answer4">.
+                </div>
+            </div>
+            <button class="check-button" onclick="checkAnswers()">Kiểm tra đáp án</button>
+            <div id="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswers() {
+            const answers = {
+                answer1: "an apartment",
+                answer2: "bedrooms",
+                answer3: "pool",
+                answer4: "a garage"
+            };
+
+            let score = 0;
+            const totalQuestions = Object.keys(answers).length;
+            const feedbackElement = document.getElementById('feedback');
+
+            for (const key in answers) {
+                const inputElement = document.getElementById(key);
+                const userAnswer = inputElement.value.trim().toLowerCase();
+                const correctAnswer = answers[key].toLowerCase();
+
+                inputElement.classList.remove('correct', 'incorrect');
+
+                let isCorrect = false;
+                if (key === 'answer1' || key === 'answer4') {
+                    const correctAnswerWithoutArticle = correctAnswer.split(' ')[1];
+                    isCorrect = (userAnswer === correctAnswer || userAnswer === correctAnswerWithoutArticle);
+                } else {
+                    isCorrect = (userAnswer === correctAnswer);
+                }
+                
+                if (isCorrect) {
+                    inputElement.classList.add('correct');
+                    score++;
+                } else {
+                    inputElement.classList.add('incorrect');
+                }
+            }
+            
+            if (score === totalQuestions) {
+                feedbackElement.textContent = `Tuyệt vời! Bạn đã trả lời đúng tất cả ${totalQuestions} câu!`;
+                feedbackElement.style.color = '#28a745';
+            } else {
+                feedbackElement.textContent = `Bạn đã trả lời đúng ${score} trên ${totalQuestions} câu. Hãy thử lại nhé!`;
+                feedbackElement.style.color = '#dc3545';
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập Tiếng Anh: Thì Hiện Tại Đơn</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background-color: #ffffff;
+            padding: 25px 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        h1, h2 {
+            color: #005a9c;
+            border-bottom: 2px solid #eef2f5;
+            padding-bottom: 10px;
+        }
+        .exercise-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+        .exercise-item {
+            margin-bottom: 12px;
+            font-size: 1.1em;
+            padding: 5px 0;
+        }
+        .exercise-item input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            margin: 0 5px;
+            width: 150px;
+            transition: all 0.2s ease;
+        }
+        .exercise-item input::placeholder {
+            color: #28a745;
+            font-style: italic;
+        }
+        .exercise-item input.correct { border-color: #28a745; background-color: #e9f7ef; }
+        .exercise-item input.incorrect { border-color: #dc3545; background-color: #fce8e6; }
+        
+        .exercise-c-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+        .table-column { flex: 1; min-width: 280px; }
+        .dialogue-column { flex: 2; min-width: 350px; }
+        
+        .info-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 1.1em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .info-table th, .info-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: center;
+        }
+        .info-table th { background-color: #005a9c; color: white; }
+        .info-table td:first-child { text-align: left; font-weight: 500; }
+        .check-mark { color: #28a745; font-weight: bold; font-size: 1.5em; line-height: 1; }
+        .cross-mark { color: #dc3545; font-weight: bold; font-size: 1.2em; line-height: 1; }
+        
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .check-button, .reset-button {
+            padding: 10px 20px;
+            font-size: 1.05em;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .check-button { background-color: #007bff; }
+        .check-button:hover { background-color: #0056b3; }
+        .reset-button { background-color: #6c757d; }
+        .reset-button:hover { background-color: #5a6268; }
+
+        /* KHU VỰC PHẢN HỒI KẾT QUẢ MỚI */
+        .feedback {
+            margin-top: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Bài tập Tiếng Anh: Thì Hiện Tại Đơn</h1>
+
+        <!-- BÀI TẬP B -->
+        <div class="exercise-section" id="exercise-b">
+            <h2>b. Fill in the blanks with the correct form of the verbs.</h2>
+            <div class="exercise-item">1. My brother <input type="text" id="b1"> (live) in the USA.</div>
+            <div class="exercise-item">2. We <input type="text" id="b2"> (have) a dog.</div>
+            <div class="exercise-item">3. <input type="text" id="b3" style="width: 180px;"> (live) in Hanoi? — No, he doesn't. He <input type="text" id="b4"> (live) in Hue.</div>
+            <div class="exercise-item">4. My house <input type="text" id="b5"> (not have) a yard.</div>
+            <div class="exercise-item">5. Do you live in a house? — No, I don't. I <input type="text" id="b6"> (live) in an apartment.</div>
+            <div class="exercise-item">6. Do they <input type="text" id="b7"> (have) a car? — Yes, they do.</div>
+            <div class="button-group">
+                <button class="check-button" onclick="checkExerciseB()">Kiểm tra</button>
+                <button class="reset-button" onclick="resetExerciseB()">Làm lại</button>
+            </div>
+            <!-- KHU VỰC PHẢN HỒI RIÊNG CHO BÀI B -->
+            <div class="feedback" id="feedback-b"></div>
+        </div>
+
+        <!-- BÀI TẬP C -->
+        <div class="exercise-section" id="exercise-c">
+            <h2>c. Look at the table and write Alex's answers.</h2>
+            <div class="exercise-c-container">
+                <div class="table-column">
+                    <table class="info-table">
+                        <thead>
+                            <tr><th></th><th>Alex</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>house</td><td><span class="cross-mark">✗</span></td></tr>
+                            <tr><td>apartment</td><td><span class="check-mark">✓</span></td></tr>
+                            <tr><td>gym</td><td><span class="check-mark">✓</span></td></tr>
+                            <tr><td>pool</td><td><span class="cross-mark">✗</span></td></tr>
+                            <tr><td>yard</td><td><span class="cross-mark">✗</span></td></tr>
+                            <tr><td>balcony</td><td><span class="check-mark">✓</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dialogue-column">
+                    <div class="exercise-item"><b>Jenny:</b> Excuse me, Alex. Do you live in a house?</div>
+                    <div class="exercise-item"><b>Alex (1):</b> No, I don't. I live in an apartment.</div>
+                    <div class="exercise-item"><b>Jenny:</b> Does your apartment have a gym?</div>
+                    <div class="exercise-item"><b>Alex (2):</b> <input type="text" id="c2" style="width: 90%;"></div>
+                    <div class="exercise-item"><b>Jenny:</b> Does your apartment have a pool?</div>
+                    <div class="exercise-item"><b>Alex (3):</b> <input type="text" id="c3" style="width: 90%;"></div>
+                    <div class="exercise-item"><b>Jenny:</b> Does your apartment have a yard?</div>
+                    <div class="exercise-item"><b>Alex (4):</b> <input type="text" id="c4" style="width: 90%;"></div>
+                    <div class="exercise-item"><b>Jenny:</b> Does your apartment have a balcony?</div>
+                    <div class="exercise-item"><b>Alex (5):</b> <input type="text" id="c5" style="width: 90%;"></div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="check-button" onclick="checkExerciseC()">Kiểm tra</button>
+                <button class="reset-button" onclick="resetExerciseC()">Làm lại</button>
+            </div>
+             <!-- KHU VỰC PHẢN HỒI RIÊNG CHO BÀI C -->
+            <div class="feedback" id="feedback-c"></div>
+        </div>
+    </div>
+
+    <script>
+        const answersB = {
+            b1: "lives", b2: "have", b3: "does he live", b4: "lives",
+            b5: "doesn't have", b6: "live", b7: "have"
+        };
+        
+        const answersC = {
+            c2: "Yes, it does.", c3: "No, it doesn't.", c4: "No, it doesn't.", c5: "Yes, it does."
+        };
+
+        function checkAnswers(answerObject, exerciseId) {
+            const inputs = document.querySelectorAll(`#${exerciseId} input`);
+            const feedbackElement = document.getElementById(`feedback-${exerciseId.split('-')[1]}`);
+            let score = 0;
+            const totalQuestions = inputs.length;
+
+            inputs.forEach(input => {
+                const id = input.id;
+                const correctAnswer = answerObject[id];
+                let userAnswer = input.value.trim().toLowerCase();
+                
+                if (id.startsWith('c')) {
+                    userAnswer = userAnswer.replace(/\.$/, '');
+                }
+                
+                input.classList.remove('correct', 'incorrect');
+                
+                if (userAnswer === correctAnswer.toLowerCase().replace(/\.$/, '')) {
+                    input.classList.add('correct');
+                    score++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = '';
+                    input.placeholder = correctAnswer;
+                }
+            });
+
+            // HIỂN THỊ KẾT QUẢ ĐÃ CẬP NHẬT
+            if (score === totalQuestions) {
+                feedbackElement.textContent = `Chúc mừng! Bạn đã làm đúng hết ${totalQuestions} câu!`;
+                feedbackElement.style.color = '#28a745';
+            } else {
+                feedbackElement.textContent = `Bạn đã đúng ${score}/${totalQuestions} câu. Hãy xem gợi ý ở các ô màu đỏ nhé!`;
+                feedbackElement.style.color = '#dc3545';
+            }
+        }
+
+        function resetExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`#${exerciseId} input`);
+            const feedbackElement = document.getElementById(`feedback-${exerciseId.split('-')[1]}`);
+            
+            inputs.forEach(input => {
+                input.value = '';
+                input.placeholder = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+
+            // Xóa cả thông báo kết quả
+            feedbackElement.textContent = '';
+            feedbackElement.style.color = '';
+        }
+
+        // Các hàm gọi riêng cho từng bài
+        function checkExerciseB() { checkAnswers(answersB, 'exercise-b'); }
+        function resetExerciseB() { resetExercise('exercise-b'); }
+        function checkExerciseC() { checkAnswers(answersC, 'exercise-c'); }
+        function resetExerciseC() { resetExercise('exercise-c'); }
+    </script>
+
+</body>
+</html>

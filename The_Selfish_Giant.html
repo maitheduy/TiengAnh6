@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 18: The Selfish Giant</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f7f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            background-color: #e7f1ff;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        nav button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        nav button:hover {
+            background-color: #0056b3;
+        }
+        nav button.active {
+            background-color: #c82333;
+            font-weight: bold;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s;
+        }
+        .content-section.active {
+            display: block; /* Shown when active */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Story Section */
+        #story-audio {
+            text-align: center;
+            margin: 15px 0;
+        }
+        #story-content {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fdfdfd;
+        }
+        
+        /* Exercise Styling */
+        .exercise {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #007bff;
+            border-radius: 5px;
+        }
+        .exercise ol, .exercise ul {
+            padding-left: 20px;
+        }
+        .exercise li {
+            margin-bottom: 15px; /* Increase margin for better spacing */
+            padding: 5px;
+            border-radius: 4px;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        
+        .button-group {
+            margin-top: 15px;
+        }
+        .check-btn, .reset-btn {
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .check-btn { background-color: #28a745; }
+        .check-btn:hover { background-color: #218838; }
+        .reset-btn { background-color: #ffc107; color: #333; }
+        .reset-btn:hover { background-color: #e0a800; }
+        
+        .result { margin-top: 10px; font-weight: bold; }
+        .correct { color: green; }
+        .incorrect { color: red; }
+        .correct-answer-hint {
+            color: #dc3545;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .li-correct { background-color: #e9f7ea; }
+        .li-incorrect { background-color: #fce8e6; }
+        
+        /* Sentence Building */
+        textarea {
+            width: calc(100% - 20px);
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+            font-size: 1em;
+        }
+        .model-answer {
+            display: none; /* Hidden by default */
+            background-color: #e2e3e5;
+            color: #383d41;
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #6c757d;
+        }
+        .model-answer::before {
+            content: 'Suggested Answer: ';
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Unit 18: The Selfish Giant</h1>
+
+        <nav id="app-nav">
+            <button class="nav-btn active" data-target="story">The Story</button>
+            <button class="nav-btn" data-target="mcq">Choose the Correct Ending</button>
+            <button class="nav-btn" data-target="ordering">Number the Sentences</button>
+            <button class="nav-btn" data-target="words">Working with Words</button>
+            <button class="nav-btn" data-target="building">Sentence Building</button>
+        </nav>
+
+        <!-- Section 1: The Story with Audio -->
+        <section id="story" class="content-section active">
+            <h2>The Selfish Giant 🎧</h2>
+            <div id="story-audio">
+                <iframe width="300" height="60" src="https://vocaroo.com/embed/1lYeLiEJrjPZ?autoplay=0" frameborder="0" allow="autoplay"></iframe><br>
+            </div>
+            <div id="story-content">
+                <p>Every day after school some children played in a beautiful garden. It belonged to a giant but he was not in his castle. He was visiting his friend a long way away. Flowers like stars grew in the grass. In spring the trees had pink flowers on their branches. In the autumn the trees held round golden fruit.</p>
+                <p>'We are very happy here!' the children told each other.</p>
+                <p>The giant stayed away for seven years, but one day he came back. He saw the children in his garden. 'What are you doing here?' he asked in a gruff voice. 'This garden is mine!' The children ran away. The giant built a wall all round the garden. He put up a big notice: KEEP OUT!</p>
+                <p>He was a very selfish giant. The children had nowhere to play. They tried to play on the road, but the road was very dusty and full of hard stones. They passed the high wall after school. 'We were happy there,' they said to each other.</p>
+                <p>Spring came. Everywhere there were flowers and birds. But in the selfish giant's garden it was still winter. The birds did not want to sing in it because there were no children. There were no flowers anywhere. Snow covered the grass. The north wind came. It rattled the windows. It roared all round the garden like an angry beast. The giant could not understand it. 'Where is spring?' he said.</p>
+                <p>But spring never came, nor the summer. In the autumn the other gardens had golden fruit but the giant's garden had nothing. It was always winter in his garden. There was ice and snow. The cold north wind blew more fiercely every day.</p>
+                <p>One morning the giant woke up early. He heard beautiful music. It was a bird singing cheerfully outside his window. The giant looked out. He saw a small hole in his tall, thick wall. But then he saw the most wonderful sight. In every tree sat a little child. Pink flowers were on the branches. The birds were flying about and twittering. The flowers nodded their heads most joyfully. The giant's heart melted.</p>
+                <p>'I was very selfish!' he said. 'Now I understand why spring never came! My garden can be the children's playground for ever and ever!' He took a big axe and knocked down the wall and the children played there every day.</p>
+            </div>
+        </section>
+
+        <!-- Section 2: Multiple Choice Questions -->
+        <section id="mcq" class="content-section">
+            <h2>Reading and understanding</h2>
+            <div class="exercise">
+                <h3>1. Choose the correct ending.</h3>
+                <form id="mcq-form">
+                    <ol>
+                        <li>The children played in the garden ___ . <br>
+                            <input type="radio" name="q1" value="a"> a in the spring 
+                            <input type="radio" name="q1" value="b"> b after school 
+                            <input type="radio" name="q1" value="c"> c after lunch
+                        </li>
+                        <li>In spring, the branches on the trees had pink ___ . <br>
+                            <input type="radio" name="q2" value="a"> a fruit 
+                            <input type="radio" name="q2" value="b"> b sweets 
+                            <input type="radio" name="q2" value="c"> c flowers
+                        </li>
+                        <li>The trees held golden fruit ___ . <br>
+                            <input type="radio" name="q3" value="a"> a in the autumn 
+                            <input type="radio" name="q3" value="b"> b in the garden 
+                            <input type="radio" name="q3" value="c"> c for the children
+                        </li>
+                        <li>The giant stayed away for seven ___ . <br>
+                            <input type="radio" name="q4" value="a"> a days 
+                            <input type="radio" name="q4" value="b"> b years 
+                            <input type="radio" name="q4" value="c"> c weeks
+                        </li>
+                        <li>The giant built a wall around ___ . <br>
+                            <input type="radio" name="q5" value="a"> a the children 
+                            <input type="radio" name="q5" value="b"> b the castle 
+                            <input type="radio" name="q5" value="c"> c the garden
+                        </li>
+                        <li>The notice said: ___! <br>
+                            <input type="radio" name="q6" value="a"> a Keep away 
+                            <input type="radio" name="q6" value="b"> b Keep out 
+                            <input type="radio" name="q6" value="c"> c Look out
+                        </li>
+                        <li>In the giant's garden it was always ___ . <br>
+                            <input type="radio" name="q7" value="a"> a ice 
+                            <input type="radio" name="q7" value="b"> b wind 
+                            <input type="radio" name="q7" value="c"> c cold
+                        </li>
+                        <li>When the giant woke up he heard beautiful ___ . <br>
+                            <input type="radio" name="q8" value="a"> a music 
+                            <input type="radio" name="q8" value="b"> b children 
+                            <input type="radio" name="q8" value="c"> c a bird
+                        </li>
+                        <li>In the garden he saw ___ . <br>
+                            <input type="radio" name="q9" value="a"> a a child 
+                            <input type="radio" name="q9" value="b"> b children 
+                            <input type="radio" name="q9" value="c"> c a hole
+                        </li>
+                        <li>He took an axe and knocked down ___ . <br>
+                            <input type="radio" name="q10" value="a"> a the castle 
+                            <input type="radio" name="q10" value="b"> b the trees 
+                            <input type="radio" name="q10" value="c"> c the wall
+                        </li>
+                    </ol>
+                </form>
+                <div class="button-group">
+                    <button id="check-mcq" class="check-btn">Check Answers</button>
+                    <button id="reset-mcq" class="reset-btn">Try Again</button>
+                </div>
+                <div id="mcq-result" class="result"></div>
+            </div>
+        </section>
+
+        <!-- Section 3: Sentence Ordering -->
+        <section id="ordering" class="content-section">
+            <h2>Number the sentences in order.</h2>
+            <div class="exercise">
+                <ul id="ordering-list" style="list-style-type: none;">
+                    <li><input type="number" min="1" max="9" data-id="a"> a The giant saw the children in his garden.</li>
+                    <li><input type="number" min="1" max="9" data-id="b"> b The giant put up a big notice.</li>
+                    <li><input type="number" min="1" max="9" data-id="c"> c The giant visited his friend a long way away.</li>
+                    <li><input type="number" min="1" max="9" data-id="d"> d The children had nowhere to play.</li>
+                    <li><input type="number" min="1" max="9" data-id="e"> e The giant built a wall all round his garden.</li>
+                    <li><input type="number" min="1" max="9" data-id="f"> f 'What are you doing here?' the giant asked.</li>
+                    <li><input type="number" min="1" max="9" data-id="g"> g The giant said, 'This garden is mine!'</li>
+                    <li><input type="number" min="1" max="9" data-id="h"> h One day the giant came back to his castle.</li>
+                    <li><input type="number" min="1" max="9" data-id="i"> i The children ran away.</li>
+                </ul>
+                <div class="button-group">
+                    <button id="check-ordering" class="check-btn">Check Order</button>
+                    <button id="reset-ordering" class="reset-btn">Try Again</button>
+                </div>
+                <div id="ordering-result" class="result"></div>
+            </div>
+        </section>
+
+        <!-- Section 4: Working with Words -->
+        <section id="words" class="content-section">
+            <h2>Working with words</h2>
+            <div class="exercise">
+                <h3>Find and write the correct word.</h3>
+                <div style="background-color: #e9ecef; padding: 10px; border-radius: 5px; text-align: center; margin-bottom: 15px;">
+                    <strong>joyfully | rattle | twitter | fiercely | cheerfully | roar</strong>
+                </div>
+                <ol id="word-work-list">
+                    <li>The sound the windows made when the wind blew hard against them. <input type="text" id="word1"></li>
+                    <li>The sound the wind made when it blew around the garden. <input type="text" id="word2"></li>
+                    <li>Two words that mean 'happily'. <input type="text" id="word3a"> / <input type="text" id="word3b"></li>
+                    <li>One word that means 'angrily and unkindly'. <input type="text" id="word4"></li>
+                    <li>The sound birds make when they are happy. <input type="text" id="word5"></li>
+                </ol>
+                <div class="button-group">
+                    <button id="check-words" class="check-btn">Check Words</button>
+                    <button id="reset-words" class="reset-btn">Try Again</button>
+                </div>
+                <div id="words-result" class="result"></div>
+            </div>
+        </section>
+
+        <!-- Section 5: Sentence Building (UPDATED) -->
+        <section id="building" class="content-section">
+            <h2>Sentence building</h2>
+            <div class="exercise">
+                <h3>Write each sentence in another way.</h3>
+                <ol id="building-list">
+                    <li>
+                        <p>'This is a nice garden,' the children said.</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                    <li>
+                        <p>The giant asked the children, 'What are you doing here?'</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                    <li>
+                        <p>The children said, 'We like to come in the garden.'</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                    <li>
+                        <p>'This garden is mine!' the giant said.</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                     <li>
+                        <p>'Can we play here?' the children asked.</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                     <li>
+                        <p>The giant shouted, 'No. Go away!'</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                    <li>
+                        <p>'That is very selfish,' the children said.</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                    <li>
+                        <p>'Sorry. You can stay and play in my garden,' the giant said.</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                    <li>
+                        <p>The giant said, 'I was very selfish.'</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                    <li>
+                        <p>The children told each other, 'We are very happy here!'</p>
+                        <textarea placeholder="Your answer..."></textarea>
+                        <div class="model-answer"></div>
+                    </li>
+                </ol>
+                <div class="button-group">
+                    <button id="check-building" class="check-btn">Check Sentences</button>
+                    <button id="reset-building" class="reset-btn">Try Again</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Navigation Logic ---
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const contentSections = document.querySelectorAll('.content-section');
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                contentSections.forEach(sec => sec.classList.remove('active'));
+                button.classList.add('active');
+                document.getElementById(button.dataset.target).classList.add('active');
+            });
+        });
+
+        // --- Helper Function to remove old hints ---
+        const removeOldHints = (parent) => {
+            parent.querySelectorAll('.correct-answer-hint').forEach(hint => hint.remove());
+        };
+
+        // --- MCQ Logic ---
+        const mcqForm = document.getElementById('mcq-form');
+        const mcqResult = document.getElementById('mcq-result');
+        const mcqItems = mcqForm.querySelectorAll('li');
+        
+        document.getElementById('check-mcq').addEventListener('click', () => {
+            const correctAnswers = { q1: 'b', q2: 'c', q3: 'a', q4: 'b', q5: 'c', q6: 'b', q7: 'c', q8: 'a', q9: 'c', q10: 'c' };
+            let score = 0;
+            
+            mcqItems.forEach((li, index) => {
+                const questionName = `q${index + 1}`;
+                removeOldHints(li);
+                const selected = mcqForm.querySelector(`input[name="${questionName}"]:checked`);
+                const correctAnswer = correctAnswers[questionName];
+
+                if (selected && selected.value === correctAnswer) {
+                    score++;
+                    li.className = 'li-correct';
+                } else {
+                    li.className = 'li-incorrect';
+                    const hint = document.createElement('span');
+                    hint.className = 'correct-answer-hint';
+                    hint.textContent = `(Correct is: "${correctAnswer}")`;
+                    li.appendChild(hint);
+                }
+            });
+
+            mcqResult.textContent = `You got ${score} out of 10 correct!`;
+            mcqResult.className = 'result ' + (score > 6 ? 'correct' : 'incorrect');
+        });
+
+        document.getElementById('reset-mcq').addEventListener('click', () => {
+            mcqForm.reset();
+            mcqItems.forEach(li => {
+                li.className = '';
+                removeOldHints(li);
+            });
+            mcqResult.textContent = '';
+        });
+
+        // --- Sentence Ordering Logic ---
+        const orderingList = document.getElementById('ordering-list');
+        const orderingInputs = orderingList.querySelectorAll('input');
+        const orderingResult = document.getElementById('ordering-result');
+
+        document.getElementById('check-ordering').addEventListener('click', () => {
+            const correctOrder = { c: 1, h: 2, a: 3, f: 4, g: 5, i: 6, e: 7, b: 8, d: 9 };
+            let allCorrect = true;
+            
+            orderingInputs.forEach(input => {
+                const li = input.parentElement;
+                removeOldHints(li);
+                const id = input.dataset.id;
+                if (parseInt(input.value) === correctOrder[id]) {
+                    li.className = 'li-correct';
+                } else {
+                    allCorrect = false;
+                    li.className = 'li-incorrect';
+                    const hint = document.createElement('span');
+                    hint.className = 'correct-answer-hint';
+                    hint.textContent = `(Correct order: ${correctOrder[id]})`;
+                    li.appendChild(hint);
+                }
+            });
+
+            if (allCorrect) {
+                orderingResult.textContent = 'Perfect! The order is correct.';
+                orderingResult.className = 'result correct';
+            } else {
+                orderingResult.textContent = 'Not quite right. Check the hints and try again.';
+                orderingResult.className = 'result incorrect';
+            }
+        });
+        
+        document.getElementById('reset-ordering').addEventListener('click', () => {
+            orderingInputs.forEach(input => {
+                input.value = '';
+                const li = input.parentElement;
+                li.className = '';
+                removeOldHints(li);
+            });
+            orderingResult.textContent = '';
+        });
+
+        // --- Working with Words Logic ---
+        const wordList = document.getElementById('word-work-list');
+        const wordInputs = wordList.querySelectorAll('input');
+        const wordsResult = document.getElementById('words-result');
+
+        document.getElementById('check-words').addEventListener('click', () => {
+            const answers = {
+                word1: 'rattle',
+                word2: 'roar',
+                word3: ['joyfully', 'cheerfully'],
+                word4: 'fiercely',
+                word5: 'twitter'
+            };
+            let allCorrect = true;
+
+            const checkSimpleInput = (inputId, correctAnswer) => {
+                const input = document.getElementById(inputId);
+                const li = input.parentElement;
+                removeOldHints(li);
+                if (input.value.trim().toLowerCase() === correctAnswer) {
+                    li.className = 'li-correct';
+                } else {
+                    allCorrect = false;
+                    li.className = 'li-incorrect';
+                    const hint = document.createElement('span');
+                    hint.className = 'correct-answer-hint';
+                    hint.textContent = `(Correct: ${correctAnswer})`;
+                    li.appendChild(hint);
+                }
+            };
+            
+            checkSimpleInput('word1', answers.word1);
+            checkSimpleInput('word2', answers.word2);
+            checkSimpleInput('word4', answers.word4);
+            checkSimpleInput('word5', answers.word5);
+
+            // Check for question 3 (two possible answers)
+            const word3a = document.getElementById('word3a');
+            const word3b = document.getElementById('word3b');
+            const li3 = word3a.parentElement;
+            removeOldHints(li3);
+            const valA = word3a.value.trim().toLowerCase();
+            const valB = word3b.value.trim().toLowerCase();
+            if (answers.word3.includes(valA) && answers.word3.includes(valB) && valA !== valB) {
+                li3.className = 'li-correct';
+            } else {
+                allCorrect = false;
+                li3.className = 'li-incorrect';
+                const hint = document.createElement('span');
+                hint.className = 'correct-answer-hint';
+                hint.textContent = `(Correct: ${answers.word3.join(' / ')})`;
+                li3.appendChild(hint);
+            }
+
+            if (allCorrect) {
+                wordsResult.textContent = 'Excellent! All words are correct.';
+                wordsResult.className = 'result correct';
+            } else {
+                wordsResult.textContent = 'Some words are incorrect. Please check the hints.';
+                wordsResult.className = 'result incorrect';
+            }
+        });
+
+        document.getElementById('reset-words').addEventListener('click', () => {
+            wordInputs.forEach(input => {
+                input.value = '';
+                const li = input.parentElement;
+                li.className = '';
+                removeOldHints(li);
+            });
+            wordsResult.textContent = '';
+        });
+
+        // --- UPDATED Sentence Building Logic ---
+        const buildingList = document.getElementById('building-list');
+        const buildingItems = buildingList.querySelectorAll('li');
+        const checkBuildingBtn = document.getElementById('check-building');
+        const resetBuildingBtn = document.getElementById('reset-building');
+        
+        const modelAnswers = [
+            "The children said, 'This is a nice garden.'",
+            "'What are you doing here?' the giant asked the children.",
+            "'We like to come in the garden,' the children said.",
+            "The giant said, 'This garden is mine!'",
+            "The children asked, 'Can we play here?'",
+            "'No. Go away!' the giant shouted.",
+            "The children said, 'That is very selfish.'",
+            "The giant said, 'Sorry. You can stay and play in my garden.'",
+            "'I was very selfish,' the giant said.",
+            "'We are very happy here!' the children told each other."
+        ];
+
+        checkBuildingBtn.addEventListener('click', () => {
+            buildingItems.forEach((li, index) => {
+                const modelAnswerDiv = li.querySelector('.model-answer');
+                modelAnswerDiv.textContent = modelAnswers[index];
+                modelAnswerDiv.style.display = 'block';
+            });
+        });
+
+        resetBuildingBtn.addEventListener('click', () => {
+            buildingItems.forEach(li => {
+                // Clear the user's input
+                li.querySelector('textarea').value = '';
+                
+                // Hide the model answer
+                const modelAnswerDiv = li.querySelector('.model-answer');
+                modelAnswerDiv.textContent = '';
+                modelAnswerDiv.style.display = 'none';
+            });
+        });
+
+    });
+    </script>
+
+</body>
+</html>

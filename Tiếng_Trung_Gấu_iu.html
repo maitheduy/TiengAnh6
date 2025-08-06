@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thế giới tiếng Trung của Gấu iu</title>
+    <!-- Hanzi Writer -->
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer/dist/hanzi-writer.min.js"></script>
+    <!-- Font chữ Hán -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff9a9e;
+            --secondary-color: #fecfef;
+            --accent-color: #d9534f;
+            --light-color: #fff8f0;
+            --text-color: #333;
+            --yellow: #fffacd;
+            --blue: #add8e6;
+            --pink: #ffb6c1;
+            --font-hanzi: 'Noto Sans SC', sans-serif;
+        }
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: var(--light-color);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            border: 3px solid #ffe0e0;
+        }
+        h1, h2 {
+            color: #e91e63;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        h1::before { content: "🧸 "; }
+        h2::before { content: "✨ "; }
+        .app-section {
+            background-color: var(--yellow);
+            margin-bottom: 25px;
+            padding: 25px;
+            border-radius: 18px;
+            border: 2px dashed #ff69b4;
+        }
+        input[type="text"] {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #bbdefb;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+        }
+        button {
+            background-image: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        #word-list { list-style: none; padding: 0; margin: 0; }
+        #word-list li {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 18px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 12px;
+            border-left: 5px solid var(--accent-color);
+        }
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .word-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .word-content img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .chinese-span {
+            font-family: var(--font-hanzi);
+            font-weight: bold;
+            font-size: 1.5em;
+            color: #d32f2f;
+            cursor: pointer;
+            border-bottom: 2px dotted #d9534f;
+            padding: 0 2px;
+            transition: background-color 0.2s;
+        }
+        .chinese-span:hover {
+            background-color: #fef0f0;
+        }
+        .pinyin-span {
+            font-style: italic;
+            color: #1976d2;
+            font-size: 1.1em;
+        }
+        .vietnamese-span {
+            color: #555;
+            font-size: 1em;
+        }
+        .speak-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.4em;
+            padding: 0 8px;
+            color: #1976d2;
+        }
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .level-badge {
+            font-size: 0.8em;
+            padding: 3px 8px;
+            background: #ffeb3b;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        /* Luyện viết - Mỗi từ có ô riêng */
+        .writing-area {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .writer-container {
+            width: 200px;
+            height: 200px;
+            margin: 10px auto;
+            border: 3px solid #ccc;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        .writing-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .writing-btn {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .animate-btn { background: #4CAF50; color: white; }
+        .quiz-btn { background: #2196F3; color: white; }
+
+        /* Trò chơi */
+        #matching-game .game-columns {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        #chinese-column, #meaning-column {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        #chinese-column {
+            background-color: var(--blue);
+            color: #003366;
+        }
+        #meaning-column {
+            background-color: var(--pink);
+            color: #660033;
+        }
+        .word-option {
+            padding: 12px 16px;
+            margin: 10px 0;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .word-option.selected {
+            background-color: #fffacd;
+            border-color: #ff69b4;
+            transform: scale(1.05);
+        }
+        .word-option.incorrect {
+            background-color: #ffcdd2;
+            border-color: #f44336;
+        }
+        .word-option.disappearing {
+            opacity: 0;
+            transform: scale(0.5);
+            pointer-events: none;
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        #fill-clue {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #1565c0;
+        }
+        #fill-feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        #game-win-message {
+            color: #4caf50;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thế giới tiếng Trung của Gấu iu 🧸</h1>
+
+        <!-- Thêm từ mới -->
+        <div class="app-section">
+            <h2>➕ Thêm Từ Mới</h2>
+            <input type="text" id="chinese-word" placeholder="Chữ Hán (ví dụ: 猫)">
+            <button id="lookup-btn" style="background: #4CAF50; margin-bottom: 10px;">🔍 Tra Từ (Mở Google Dịch)</button>
+            <input type="text" id="pinyin" placeholder="Phiên âm (ví dụ: māo)">
+            <input type="text" id="vietnamese-meaning" placeholder="Nghĩa tiếng Việt (ví dụ: con mèo)">
+            <input type="text" id="example-zh" placeholder="Câu tiếng Trung (ví dụ: 这只猫很可爱)">
+            <input type="text" id="example-vi" placeholder="Câu tiếng Việt">
+            <input type="text" id="image-url" placeholder="URL hình ảnh (tùy chọn)">
+            <button id="add-word-btn">✅ Thêm Từ</button>
+        </div>
+
+        <!-- Thống kê -->
+        <div class="app-section">
+            <h2>📊 Thống Kê</h2>
+            <div id="stats-container">
+                <p>Tổng số từ: <strong id="total-words">0</strong></p>
+                <p>Từ đã nhớ (Level 3+): <strong id="mastered-words">0</strong></p>
+            </div>
+        </div>
+
+        <!-- Danh sách từ -->
+        <div class="app-section">
+            <h2>📚 Danh Sách Từ Của Bé</h2>
+            <ul id="word-list"></ul>
+        </div>
+
+        <!-- Trò chơi Ghép từ -->
+        <div class="app-section">
+            <h2>🎮 Ghép Từ</h2>
+            <button id="start-matching-btn">Chơi Ngay!</button>
+            <div id="matching-game" class="game-area">
+                <p>Chọn cặp từ đúng để ghép! 🎯</p>
+                <div class="game-columns">
+                    <div id="chinese-column"></div>
+                    <div id="meaning-column"></div>
+                </div>
+                <p>Điểm: <strong id="matching-score">0</strong></p>
+                <p id="game-win-message"></p>
+            </div>
+        </div>
+
+        <!-- Trò chơi Điền từ -->
+        <div class="app-section">
+            <h2>🔤 Điền Từ</h2>
+            <button id="start-fill-btn">Bắt Đầu!</button>
+            <div id="fill-game" class="game-area">
+                <p id="fill-clue"></p>
+                <input type="text" id="fill-answer" placeholder="Nhập chữ Hán đúng...">
+                <button id="check-fill-btn">Kiểm tra ✅</button>
+                <p id="fill-feedback"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ẢNH CHUNG CHO MỌI TỪ ---
+        const DEFAULT_IMAGE_URL = "https://i.postimg.cc/LnL6T1Rp/Screenshot-2025-08-06-at-19-01-44.png";
+
+        // --- DOM Elements ---
+        const chineseWordInput = document.getElementById('chinese-word');
+        const pinyinInput = document.getElementById('pinyin');
+        const vietnameseMeaningInput = document.getElementById('vietnamese-meaning');
+        const exampleZhInput = document.getElementById('example-zh');
+        const exampleViInput = document.getElementById('example-vi');
+        const imageUrlInput = document.getElementById('image-url');
+        const addWordBtn = document.getElementById('add-word-btn');
+        const lookupBtn = document.getElementById('lookup-btn');
+        const wordList = document.getElementById('word-list');
+        const totalWordsEl = document.getElementById('total-words');
+        const masteredWordsEl = document.getElementById('mastered-words');
+
+        // Game elements
+        const startMatchingBtn = document.getElementById('start-matching-btn');
+        const matchingGameArea = document.getElementById('matching-game');
+        const chineseColumn = document.getElementById('chinese-column');
+        const meaningColumn = document.getElementById('meaning-column');
+        const matchingScoreEl = document.getElementById('matching-score');
+        const gameWinMessage = document.getElementById('game-win-message');
+
+        const startFillBtn = document.getElementById('start-fill-btn');
+        const fillGameArea = document.getElementById('fill-game');
+        const fillClue = document.getElementById('fill-clue');
+        const fillAnswerInput = document.getElementById('fill-answer');
+        const checkFillBtn = document.getElementById('check-fill-btn');
+        const fillFeedback = document.getElementById('fill-feedback');
+
+        // --- Dữ liệu từ ---
+        let words = JSON.parse(localStorage.getItem('chineseVocabWords')) || [
+            { chinese: '猫', pinyin: 'māo', vietnamese: 'con mèo', exampleZh: '这只猫很可爱。', exampleVi: 'Con mèo này rất dễ thương.', image: 'https://i.postimg.cc/sfa3TAb.jpeg', level: 0 },
+            { chinese: '书', pinyin: 'shū', vietnamese: 'quyển sách', exampleZh: '这是一本书。', exampleVi: 'Đây là một quyển sách.', image: 'https://i.postimg.cc/gKDNK9n.jpeg', level: 0 }
+        ];
+
+        // --- Hàm lưu và cập nhật ---
+        function saveWords() {
+            localStorage.setItem('chineseVocabWords', JSON.stringify(words));
+            updateStats();
+        }
+
+        function updateStats() {
+            totalWordsEl.textContent = words.length;
+            masteredWordsEl.textContent = words.filter(w => w.level >= 3).length;
+        }
+
+        // --- Phát âm tiếng Trung ---
+        function speakChinese(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert("Trình duyệt không hỗ trợ phát âm.");
+            }
+        }
+
+        // --- Âm thanh khi đúng ---
+        function playCorrectSound() {
+            const audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_c48281a967.mp3');
+            audio.play();
+        }
+
+        // --- MỞ GOOGLE DỊCH TRONG TAB MỚI ---
+        lookupBtn.addEventListener('click', () => {
+            const word = chineseWordInput.value.trim();
+            if (!word) {
+                alert("Hãy nhập chữ Hán để tra!");
+                return;
+            }
+            const url = `https://translate.google.com/?sl=zh&tl=vi&text=${encodeURIComponent(word)}&op=translate`;
+            window.open(url, '_blank');
+        });
+
+        // --- Thêm từ ---
+        function addWord() {
+            const chinese = chineseWordInput.value.trim();
+            const pinyin = pinyinInput.value.trim();
+            const vietnamese = vietnameseMeaningInput.value.trim();
+            const exampleZh = exampleZhInput.value.trim() || `Tôi biết chữ ${chinese}.`;
+            const exampleVi = exampleViInput.value.trim() || `Tôi biết từ "${vietnamese}".`;
+            let image = imageUrlInput.value.trim();
+
+            if (!image) {
+                image = DEFAULT_IMAGE_URL;
+            }
+
+            if (chinese && vietnamese) {
+                words.push({
+                    chinese,
+                    pinyin,
+                    vietnamese,
+                    exampleZh,
+                    exampleVi,
+                    image,
+                    level: 0
+                });
+                clearInputs();
+                saveWords();
+                displayWords();
+            } else {
+                alert('Vui lòng nhập chữ Hán và nghĩa!');
+            }
+        }
+
+        function clearInputs() {
+            chineseWordInput.value = '';
+            pinyinInput.value = '';
+            vietnameseMeaningInput.value = '';
+            exampleZhInput.value = '';
+            exampleViInput.value = '';
+            imageUrlInput.value = '';
+        }
+
+        // --- Hiển thị danh sách ---
+        function displayWords() {
+            wordList.innerHTML = '';
+            words.forEach((word, index) => {
+                const li = document.createElement('li');
+                const writerId = `writer-container-${index}`;
+                li.innerHTML = `
+                    <div class="word-header">
+                        <div class="word-content">
+                            <img src="${word.image}" alt="${word.chinese}" onerror="this.src='${DEFAULT_IMAGE_URL}';">
+                            <div>
+                                <span class="chinese-span">${word.chinese}</span>
+                                <button class="speak-btn" onclick="speakChinese('${word.chinese}')">🔊</button>
+                                <span class="level-badge">Lv.${word.level}</span>
+                                <br>
+                                <span class="pinyin-span">${word.pinyin}</span>
+                                <br>
+                                <span class="vietnamese-span">${word.vietnamese}</span>
+                            </div>
+                        </div>
+                        <button class="delete-btn" data-index="${index}">Xóa</button>
+                    </div>
+                    <div class="example-sentence">
+                        📖 ${word.exampleZh} <button class="speak-btn" onclick="speakChinese('${word.exampleZh}')">🔊</button>
+                        <br>🇻🇳 ${word.exampleVi}
+                    </div>
+                    <!-- LUYỆN VIẾT RIÊNG CHO TỪ NÀY -->
+                    <div class="writing-area">
+                        <p><strong>Luyện viết: ${word.chinese}</strong></p>
+                        <div id="${writerId}" class="writer-container"></div>
+                        <div class="writing-controls">
+                            <button class="writing-btn animate-btn" onclick="writers[${index}].animateCharacter()">🎬 Xem thứ tự</button>
+                            <button class="writing-btn quiz-btn" onclick="writers[${index}].quiz()">✍️ Luyện tập</button>
+                        </div>
+                    </div>
+                `;
+                wordList.appendChild(li);
+
+                // Khởi tạo Hanzi Writer cho từ này
+                writers[index] = HanziWriter.create(writerId, word.chinese, {
+                    width: 200,
+                    height: 200,
+                    padding: 10,
+                    showOutline: true,
+                    strokeColor: '#d9534f',
+                    radicalColor: '#5cb85c',
+                    strokeAnimationSpeed: 1,
+                    delayBetweenStrokes: 200,
+                    drawingColor: '#333',
+                    drawingLineWidth: 4
+                });
+            });
+            updateStats();
+        }
+
+        // --- Mảng lưu các instance Hanzi Writer ---
+        const writers = [];
+
+        // --- Xóa từ ---
+        function deleteWord(index) {
+            if (confirm(`Xóa từ "${words[index].chinese}"?`)) {
+                words.splice(index, 1);
+                writers.splice(index, 1);
+                saveWords();
+                displayWords();
+            }
+        }
+
+        // --- GAME 1: Ghép từ ---
+        let selectedChinese = null;
+        let selectedMeaning = null;
+        let matchingScore = 0;
+        let wordsInCurrentGame = [];
+
+        startMatchingBtn.addEventListener('click', () => {
+            wordsInCurrentGame = [...words].sort(() => 0.5 - Math.random()).slice(0, 5);
+            if (wordsInCurrentGame.length < 2) return alert("Cần ít nhất 2 từ!");
+
+            matchingGameArea.style.display = 'block';
+            gameWinMessage.textContent = '';
+            matchingScore = 0;
+            matchingScoreEl.textContent = matchingScore;
+            chineseColumn.innerHTML = '';
+            meaningColumn.innerHTML = '';
+
+            // Cột trái: chữ Hán
+            wordsInCurrentGame.forEach(word => {
+                const div = document.createElement('div');
+                div.className = 'word-option';
+                div.dataset.word = word.chinese;
+                div.textContent = word.chinese;
+                chineseColumn.appendChild(div);
+            });
+
+            // Cột phải: nghĩa tiếng Việt (xáo trộn)
+            const shuffled = [...wordsInCurrentGame].sort(() => Math.random() - 0.5);
+            shuffled.forEach(word => {
+                const div = document.createElement('div');
+                div.className = 'word-option';
+                div.dataset.word = word.chinese;
+                div.textContent = word.vietnamese;
+                meaningColumn.appendChild(div);
+            });
+
+            // Gán sự kiện click
+            document.querySelectorAll('#chinese-column .word-option, #meaning-column .word-option').forEach(option => {
+                option.addEventListener('click', handleMatchingSelection);
+            });
+        });
+
+        function handleMatchingSelection(e) {
+            const target = e.target;
+            if (target.classList.contains('disappearing')) return;
+
+            const isChinese = target.parentElement.id === 'chinese-column';
+
+            if (isChinese) {
+                if (selectedChinese) selectedChinese.classList.remove('selected');
+                selectedChinese = target;
+                selectedChinese.classList.add('selected');
+            } else {
+                if (selectedMeaning) selectedMeaning.classList.remove('selected');
+                selectedMeaning = target;
+                selectedMeaning.classList.add('selected');
+            }
+
+            if (selectedChinese && selectedMeaning) {
+                if (selectedChinese.dataset.word === selectedMeaning.dataset.word) {
+                    playCorrectSound();
+                    selectedChinese.classList.add('disappearing');
+                    selectedMeaning.classList.add('disappearing');
+                    matchingScore++;
+                    matchingScoreEl.textContent = matchingScore;
+
+                    const wordIndex = words.findIndex(w => w.chinese === selectedChinese.dataset.word);
+                    if (wordIndex !== -1) words[wordIndex].level = Math.min(words[wordIndex].level + 1, 5);
+
+                    selectedChinese = null;
+                    selectedMeaning = null;
+
+                    if (matchingScore === wordsInCurrentGame.length) {
+                        gameWinMessage.textContent = '🎉 Hoàn thành! Gấu iu thông minh! 🎉';
+                    }
+                } else {
+                    selectedChinese.classList.add('incorrect');
+                    selectedMeaning.classList.add('incorrect');
+                    setTimeout(() => {
+                        selectedChinese.classList.remove('selected', 'incorrect');
+                        selectedMeaning.classList.remove('selected', 'incorrect');
+                        selectedChinese = null;
+                        selectedMeaning = null;
+                    }, 800);
+                }
+                saveWords();
+            }
+        }
+
+        // --- GAME 2: Điền từ ---
+        let currentFillWord = null;
+        startFillBtn.addEventListener('click', () => {
+            const gameWords = [...words].sort(() => 0.5 - Math.random()).slice(0, 1);
+            if (gameWords.length === 0) return alert("Chưa có từ nào!");
+            currentFillWord = gameWords[0];
+            fillGameArea.style.display = 'block';
+            fillAnswerInput.value = '';
+            fillFeedback.textContent = '';
+            fillAnswerInput.focus();
+            fillClue.innerHTML = `Hãy điền chữ Hán cho nghĩa: "<strong>${currentFillWord.vietnamese}</strong>"`;
+        });
+
+        checkFillBtn.addEventListener('click', () => {
+            if (!currentFillWord) return;
+            const userAnswer = fillAnswerInput.value.trim();
+            const correct = currentFillWord.chinese;
+            const wordIndex = words.findIndex(w => w.chinese === currentFillWord.chinese);
+
+            if (userAnswer === correct) {
+                playCorrectSound();
+                fillFeedback.textContent = "🎉 Chính xác! Tuyệt vời!";
+                fillFeedback.style.color = "green";
+                if (wordIndex !== -1) words[wordIndex].level = Math.min(words[wordIndex].level + 1, 5);
+                setTimeout(() => startFillBtn.click(), 1500);
+            } else {
+                fillFeedback.innerHTML = `❌ Sai rồi! Đáp án là: <strong>${currentFillWord.chinese}</strong>`;
+                fillFeedback.style.color = "red";
+                if (wordIndex !== -1) words[wordIndex].level = 0;
+                setTimeout(() => startFillBtn.click(), 2500);
+            }
+            saveWords();
+        });
+
+        // --- Sự kiện ---
+        addWordBtn.addEventListener('click', addWord);
+        wordList.addEventListener('click', e => {
+            if (e.target.classList.contains('delete-btn')) {
+                deleteWord(e.target.dataset.index);
+            }
+        });
+        fillAnswerInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') checkFillBtn.click();
+        });
+
+        // --- Khởi tạo ---
+        displayWords();
+    </script>
+</body>
+</html>

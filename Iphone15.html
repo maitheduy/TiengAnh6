@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Học từ mới cùng Gấu iu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Chuẩn hóa cho iPhone 15 (393x852) */
+        * {
+            box-sizing: border-box;
+            touch-action: manipulation;
+        }
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffcc80, #ff8a65);
+            color: #e65100;
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        .container {
+            background-color: #fff3e0;
+            padding: 20px 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(230, 81, 0, 0.15);
+            width: 100%;
+            max-width: 393px;
+            margin: 0 auto;
+            border: 3px solid #ffccbc;
+        }
+        h1, h2 {
+            color: #d84315;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 1.5em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        h1::before { content: "🧸 "; }
+        h2::before { content: "✨ "; }
+        .app-section {
+            background-color: #fff9c4;
+            margin-bottom: 20px;
+            padding: 18px 15px;
+            border-radius: 15px;
+            border: 2px dashed #fb8c00;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 10px;
+            border: 2px solid #bbdefb;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #fb8c00;
+            box-shadow: 0 0 5px rgba(251, 140, 0, 0.3);
+        }
+        button {
+            background-image: linear-gradient(to right, #f57c00, #fb8c00);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 17px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            width: 100%;
+            margin: 5px 0;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+        }
+        /* Danh sách từ - Dễ cuộn, dễ đọc */
+        #word-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            max-height: 400px; 
+            overflow-y: auto; 
+            border: 2px solid #fb8c00;
+            border-radius: 12px;
+            padding: 8px;
+            background-color: #fffaf4;
+        }
+        #word-list li {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 14px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            border-left: 5px solid #fb8c00;
+        }
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .word-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .word-content img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        .english-span {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #d84315;
+        }
+        .vietnamese-span {
+            font-style: italic;
+            color: #5d4037;
+            font-size: 1em;
+        }
+        .example-sentence {
+            font-size: 0.9em;
+            color: #2e7d32;
+            margin: 5px 0 0 60px;
+            padding: 6px;
+            background-color: #e6ee9c;
+            border-radius: 6px;
+            border-left: 3px solid #afb42b;
+        }
+        .speak-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            padding: 0 6px;
+            color: #f57c00;
+        }
+        .delete-btn {
+            background: #e53935;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .level-badge {
+            font-size: 0.75em;
+            padding: 2px 6px;
+            background: #ffd54f;
+            border-radius: 8px;
+            margin-left: 6px;
+            color: #333;
+        }
+        /* Trò chơi */
+        #matching-game .game-columns {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        #english-column, #vietnamese-column {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        #english-column {
+            background-color: #bbdefb;
+            color: #003366;
+        }
+        #vietnamese-column {
+            background-color: #f8bbd0;
+            color: #660033;
+        }
+        .word-option {
+            padding: 12px 10px;
+            margin: 8px 0;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+        .word-option.selected {
+            background-color: #fffacd;
+            border-color: #fb8c00;
+            transform: scale(1.05);
+        }
+        .word-option.incorrect {
+            background-color: #ffcdd2;
+            border-color: #f44336;
+        }
+        .word-option.disappearing {
+            opacity: 0;
+            transform: scale(0.5);
+            pointer-events: none;
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        /* CHAT VỚI AI */
+        .chat-history {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #fff8e1;
+            border-radius: 15px;
+            border: 2px solid #ffcc80;
+        }
+        .chat-bubble {
+            display: flex;
+            align-items: flex-start;
+            margin: 8px 0;
+            gap: 8px;
+        }
+        .chat-bubble.user {
+            flex-direction: row;
+        }
+        .chat-bubble.ai {
+            flex-direction: row-reverse;
+        }
+        .chat-bubble .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .chat-bubble.user .avatar {
+            background-color: #ffd54f;
+            color: #333;
+        }
+        .chat-bubble.ai .avatar {
+            background-color: #4db6ac;
+            color: white;
+        }
+        .chat-bubble .message {
+            padding: 10px 14px;
+            border-radius: 16px;
+            max-width: 70%;
+            line-height: 1.4;
+            font-size: 15px;
+        }
+        .chat-bubble.user .message {
+            background-color: #bbdefb;
+            color: #0d47a1;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-bubble.ai .message {
+            background-color: #c8e6c9;
+            color: #1b5e20;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-controls {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .small-btn {
+            padding: 6px 10px !important;
+            font-size: 13px !important;
+            border-radius: 18px !important;
+            background-image: linear-gradient(to right, #8e24aa, #ff4081) !important;
+        }
+        .small-btn.copy {
+            background-image: linear-gradient(to right, #1e88e5, #42a5f5) !important;
+        }
+        .small-btn.paste {
+            background-image: linear-gradient(to right, #4caf50, #66bb6a) !important;
+        }
+        .small-btn.edit {
+            background-image: linear-gradient(to right, #fb8c00, #ffa726) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Học từ mới cùng Gấu iu 🧸</h1>
+
+        <!-- Thêm từ mới -->
+        <div class="app-section">
+            <h2>➕ Thêm Từ Mới</h2>
+            <input type="text" id="english-word" placeholder="Từ tiếng Anh (ví dụ: cat)">
+            <button id="lookup-btn" style="background: #4CAF50;">🔍 Tra Từ</button>
+            <input type="text" id="vietnamese-meaning" placeholder="Nghĩa tiếng Việt">
+            <input type="text" id="example-en" placeholder="Câu Anh">
+            <input type="text" id="example-vi" placeholder="Câu Việt">
+            <input type="text" id="image-url" placeholder="URL ảnh (tùy chọn)">
+            <button id="add-word-btn">✅ Thêm Từ</button>
+        </div>
+
+        <!-- Thống kê -->
+        <div class="app-section">
+            <h2>📊 Thống Kê</h2>
+            <p>Tổng số từ: <strong id="total-words">0</strong></p>
+            <p>Từ đã nhớ (Level 3+): <strong id="mastered-words">0</strong></p>
+        </div>
+
+        <!-- Danh sách từ -->
+        <div class="app-section">
+            <h2>📚 Danh Sách Từ</h2>
+            <ul id="word-list"></ul>
+        </div>
+
+        <!-- Trò chơi Ghép từ -->
+        <div class="app-section">
+            <h2>🎮 Ghép Từ</h2>
+            <button id="start-matching-btn">Chơi Ngay!</button>
+            <div id="matching-game">
+                <p>Chọn cặp từ đúng!</p>
+                <div class="game-columns">
+                    <div id="english-column"></div>
+                    <div id="vietnamese-column"></div>
+                </div>
+                <p>Điểm: <strong id="matching-score">0</strong></p>
+                <p id="game-win-message"></p>
+            </div>
+        </div>
+
+        <!-- Trò chơi Điền từ -->
+        <div class="app-section">
+            <h2>🔤 Điền Từ</h2>
+            <button id="start-fill-btn">Bắt Đầu!</button>
+            <div id="fill-game">
+                <p id="fill-clue"></p>
+                <input type="text" id="fill-answer" placeholder="Nhập từ...">
+                <button id="check-fill-btn">✅ Kiểm tra</button>
+                <p id="fill-feedback"></p>
+            </div>
+        </div>
+
+        <!-- Chat với AI -->
+        <div class="app-section">
+            <h2>💬 Chat với AI</h2>
+            <p>Nhập câu tiếng Anh để hỏi AI:</p>
+            <div class="chat-history" id="chat-history"></div>
+            <div style="display: flex; gap: 10px; flex-direction: column;">
+                <div>
+                    <label><strong>Câu của bé:</strong></label>
+                    <div style="position: relative;">
+                        <textarea id="user-input" rows="3"></textarea>
+                        <button id="copy-user-btn" class="small-btn copy" style="position: absolute; bottom: 4px; right: 4px;">📋</button>
+                    </div>
+                </div>
+                <div>
+                    <label><strong>AI trả lời:</strong></label>
+                    <div style="position: relative;">
+                        <textarea id="ai-response" rows="3" readonly></textarea>
+                        <button id="paste-ai-btn" class="small-btn paste" style="position: absolute; bottom: 4px; right: 4px;">📎</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-controls">
+                <button id="ai-reply-btn" style="background-image: linear-gradient(to right, #ff6b6b, #ee5a24);">🚀 AI Trả Lời</button>
+                <button id="accept-btn" style="background-image: linear-gradient(to right, #4caf50, #43a047);">✅ Chấp nhận</button>
+                <button id="clear-chat-btn" style="background: #9e9e9e;">🧹 Xóa</button>
+                <button id="edit-chat-btn" class="small-btn edit">✏️ Sửa hội thoại</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_IMAGE_URL = "https://i.postimg.cc/LnL6T1Rp/Screenshot-2025-08-06-at-19-01-44.png";
+
+        const englishWordInput = document.getElementById('english-word');
+        const vietnameseMeaningInput = document.getElementById('vietnamese-meaning');
+        const exampleEnInput = document.getElementById('example-en');
+        const exampleViInput = document.getElementById('example-vi');
+        const imageUrlInput = document.getElementById('image-url');
+        const addWordBtn = document.getElementById('add-word-btn');
+        const lookupBtn = document.getElementById('lookup-btn');
+        const wordList = document.getElementById('word-list');
+        const totalWordsEl = document.getElementById('total-words');
+        const masteredWordsEl = document.getElementById('mastered-words');
+
+        const startMatchingBtn = document.getElementById('start-matching-btn');
+        const matchingGameArea = document.getElementById('matching-game');
+        const englishColumn = document.getElementById('english-column');
+        const vietnameseColumn = document.getElementById('vietnamese-column');
+        const matchingScoreEl = document.getElementById('matching-score');
+        const gameWinMessage = document.getElementById('game-win-message');
+        const startFillBtn = document.getElementById('start-fill-btn');
+        const fillGameArea = document.getElementById('fill-game');
+        const fillClue = document.getElementById('fill-clue');
+        const fillAnswerInput = document.getElementById('fill-answer');
+        const checkFillBtn = document.getElementById('check-fill-btn');
+        const fillFeedback = document.getElementById('fill-feedback');
+
+        const userInput = document.getElementById('user-input');
+        const aiResponse = document.getElementById('ai-response');
+        const aiReplyBtn = document.getElementById('ai-reply-btn');
+        const acceptBtn = document.getElementById('accept-btn');
+        const clearChatBtn = document.getElementById('clear-chat-btn');
+        const chatHistory = document.getElementById('chat-history');
+        const copyUserBtn = document.getElementById('copy-user-btn');
+        const pasteAiBtn = document.getElementById('paste-ai-btn');
+        const editChatBtn = document.getElementById('edit-chat-btn');
+
+        let words = JSON.parse(localStorage.getItem('vocabWords')) || [
+            { english: 'apple', vietnamese: 'quả táo', exampleEn: 'I eat an apple every day.', exampleVi: 'Tôi ăn một quả táo mỗi ngày.', image: DEFAULT_IMAGE_URL, level: 0 },
+            { english: 'book', vietnamese: 'quyển sách', exampleEn: 'This is my book.', exampleVi: 'Đây là quyển sách của tôi.', image: DEFAULT_IMAGE_URL, level: 0 }
+        ];
+
+        function saveWords() {
+            localStorage.setItem('vocabWords', JSON.stringify(words));
+            updateStats();
+        }
+
+        function updateStats() {
+            totalWordsEl.textContent = words.length;
+            masteredWordsEl.textContent = words.filter(w => w.level >= 3).length;
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        function playCorrectSound() {
+            const audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_c48281a967.mp3');
+            audio.play();
+        }
+
+        function playAddSound() {
+            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-coin-drop-384.mp3');
+            audio.play();
+        }
+
+        lookupBtn.addEventListener('click', () => {
+            const word = englishWordInput.value.trim();
+            if (!word) {
+                alert("Hãy nhập từ tiếng Anh để tra!");
+                return;
+            }
+            const url = `https://translate.google.com/?sl=en&tl=vi&text=${encodeURIComponent(word)}&op=translate`;
+            window.open(url, '_blank');
+        });
+
+        function addWord() {
+            const english = englishWordInput.value.trim();
+            const vietnamese = vietnameseMeaningInput.value.trim();
+            const exampleEn = exampleEnInput.value.trim() || `I know the word "${english}".`;
+            const exampleVi = exampleViInput.value.trim() || `Tôi biết từ "${vietnamese}".`;
+            let image = imageUrlInput.value.trim();
+            if (!image) image = DEFAULT_IMAGE_URL;
+            if (english && vietnamese) {
+                words.push({ english, vietnamese, exampleEn, exampleVi, image, level: 0 });
+                clearInputs();
+                sortWordsByLevel();
+                saveWords();
+                displayWords();
+                playAddSound();
+                speak(english);
+                scrollToNewWord();
+            } else {
+                alert('Vui lòng nhập từ và nghĩa!');
+            }
+        }
+
+        function clearInputs() {
+            englishWordInput.value = '';
+            vietnameseMeaningInput.value = '';
+            exampleEnInput.value = '';
+            exampleViInput.value = '';
+            imageUrlInput.value = '';
+        }
+
+        function sortWordsByLevel() {
+            words.sort((a, b) => b.level - a.level);
+        }
+
+        function scrollToNewWord() {
+            setTimeout(() => {
+                const firstItem = wordList.querySelector('li');
+                if (firstItem) {
+                    firstItem.style.border = "3px solid #f57c00";
+                    setTimeout(() => {
+                        firstItem.style.transition = "all 1s";
+                        firstItem.style.border = "5px solid #fb8c00";
+                    }, 800);
+                    firstItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 100);
+        }
+
+        function displayWords() {
+            wordList.innerHTML = '';
+            words.forEach((word, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="word-header">
+                        <div class="word-content">
+                            <img src="${word.image}" alt="${word.english}" onerror="this.src='${DEFAULT_IMAGE_URL}';">
+                            <div>
+                                <span class="english-span">${word.english}</span>
+                                <button class="speak-btn" onclick="speak('${word.english}')">🔊</button>
+                                <span class="level-badge">Lv.${word.level}</span>
+                                <br>
+                                <span class="vietnamese-span">${word.vietnamese}</span>
+                            </div>
+                        </div>
+                        <button class="delete-btn" data-index="${index}">Xóa</button>
+                    </div>
+                    <div class="example-sentence">
+                        📖 ${word.exampleEn} <button class="speak-btn" onclick="speak('${word.exampleEn}')">🔊</button>
+                        <br>🇻🇳 ${word.exampleVi}
+                    </div>
+                `;
+                wordList.appendChild(li);
+            });
+            updateStats();
+        }
+
+        function deleteWord(index) {
+            if (confirm(`Xóa từ "${words[index].english}"?`)) {
+                words.splice(index, 1);
+                saveWords();
+                displayWords();
+            }
+        }
+
+        // --- GAME 1: GHÉP TỪ
+        let selectedEnglish = null;
+        let selectedVietnamese = null;
+        let matchingScore = 0;
+        let wordsInCurrentGame = [];
+
+        startMatchingBtn.addEventListener('click', () => {
+            wordsInCurrentGame = [...words].sort(() => 0.5 - Math.random()).slice(0, 5);
+            if (wordsInCurrentGame.length < 2) return alert("Cần ít nhất 2 từ!");
+            gameWinMessage.textContent = '';
+            matchingScore = 0;
+            matchingScoreEl.textContent = matchingScore;
+            englishColumn.innerHTML = '';
+            vietnameseColumn.innerHTML = '';
+            wordsInCurrentGame.forEach(word => {
+                const div = document.createElement('div');
+                div.className = 'word-option';
+                div.dataset.word = word.english;
+                div.textContent = word.english;
+                englishColumn.appendChild(div);
+            });
+            const shuffled = [...wordsInCurrentGame].sort(() => Math.random() - 0.5);
+            shuffled.forEach(word => {
+                const div = document.createElement('div');
+                div.className = 'word-option';
+                div.dataset.word = word.english;
+                div.textContent = word.vietnamese;
+                vietnameseColumn.appendChild(div);
+            });
+            document.querySelectorAll('#english-column .word-option, #vietnamese-column .word-option').forEach(option => {
+                option.addEventListener('click', handleMatchingSelection);
+            });
+        });
+
+        function handleMatchingSelection(e) {
+            const target = e.target;
+            if (target.classList.contains('disappearing')) return;
+            const isEnglish = target.parentElement.id === 'english-column';
+            if (isEnglish) {
+                if (selectedEnglish) selectedEnglish.classList.remove('selected');
+                selectedEnglish = target;
+                selectedEnglish.classList.add('selected');
+            } else {
+                if (selectedVietnamese) selectedVietnamese.classList.remove('selected');
+                selectedVietnamese = target;
+                selectedVietnamese.classList.add('selected');
+            }
+            if (selectedEnglish && selectedVietnamese) {
+                if (selectedEnglish.dataset.word === selectedVietnamese.dataset.word) {
+                    playCorrectSound();
+                    selectedEnglish.classList.add('disappearing');
+                    selectedVietnamese.classList.add('disappearing');
+                    matchingScore++;
+                    matchingScoreEl.textContent = matchingScore;
+                    const wordIndex = words.findIndex(w => w.english === selectedEnglish.dataset.word);
+                    if (wordIndex !== -1) words[wordIndex].level = Math.min(words[wordIndex].level + 1, 5);
+                    selectedEnglish = null;
+                    selectedVietnamese = null;
+                    if (matchingScore === wordsInCurrentGame.length) {
+                        gameWinMessage.textContent = '🎉 Hoàn thành! Gấu iu thông minh!';
+                    }
+                } else {
+                    selectedEnglish.classList.add('incorrect');
+                    selectedVietnamese.classList.add('incorrect');
+                    setTimeout(() => {
+                        selectedEnglish.classList.remove('selected', 'incorrect');
+                        selectedVietnamese.classList.remove('selected', 'incorrect');
+                        selectedEnglish = null;
+                        selectedVietnamese = null;
+                    }, 800);
+                }
+                saveWords();
+            }
+        }
+
+        // --- GAME 2: Điền Từ
+        let currentFillWord = null;
+        startFillBtn.addEventListener('click', () => {
+            const gameWords = [...words].sort(() => 0.5 - Math.random()).slice(0, 1);
+            if (gameWords.length === 0) return alert("Chưa có từ nào!");
+            currentFillWord = gameWords[0];
+            fillAnswerInput.value = '';
+            fillFeedback.textContent = '';
+            fillAnswerInput.focus();
+            fillClue.innerHTML = `Hãy điền từ tiếng Anh cho nghĩa: "<strong>${currentFillWord.vietnamese}</strong>"`;
+        });
+
+        checkFillBtn.addEventListener('click', () => {
+            if (!currentFillWord) return;
+            const userAnswer = fillAnswerInput.value.trim().toLowerCase();
+            const correct = currentFillWord.english.toLowerCase();
+            const wordIndex = words.findIndex(w => w.english === currentFillWord.english);
+            if (userAnswer === correct) {
+                playCorrectSound();
+                fillFeedback.textContent = "🎉 Chính xác! Tuyệt vời!";
+                fillFeedback.style.color = "green";
+                if (wordIndex !== -1) words[wordIndex].level = Math.min(words[wordIndex].level + 1, 5);
+                setTimeout(() => startFillBtn.click(), 1500);
+            } else {
+                fillFeedback.innerHTML = `❌ Sai rồi! Đáp án là: <strong>${currentFillWord.english}</strong>`;
+                fillFeedback.style.color = "red";
+                if (wordIndex !== -1) words[wordIndex].level = 0;
+                setTimeout(() => startFillBtn.click(), 2500);
+            }
+            saveWords();
+        });
+
+        // --- CHAT VỚI AI
+        aiReplyBtn.addEventListener('click', () => {
+            const userText = userInput.value.trim();
+            if (!userText) {
+                alert("Hãy viết câu bạn muốn hỏi AI trước nhé!");
+                return;
+            }
+            const fullPrompt = `tôi là một bé gái học lớp 3. Bạn hãy đóng vai là một người bạn chat cùng tôi, trả lời câu chat của tôi bằng chỉ 1 câu tiếng ANh đơn giản. Câu hỏi của tôi là: ${userText}`;
+            const encodedPrompt = encodeURIComponent(fullPrompt);
+            const chatUrl = `https://chatgpt.com/?q=${encodedPrompt}`;
+            window.open(chatUrl, '_blank');
+        });
+
+        copyUserBtn.addEventListener('click', () => {
+            if (userInput.value.trim() === '') {
+                alert("Chưa có câu nào để copy!");
+                return;
+            }
+            navigator.clipboard.writeText(userInput.value).then(() => {
+                alert("✅ Đã copy câu của bé!");
+            }).catch(() => alert("Không thể copy."));
+        });
+
+        pasteAiBtn.addEventListener('click', () => {
+            navigator.clipboard.readText().then(text => {
+                if (text.trim() === '') {
+                    alert("Bộ nhớ tạm trống!");
+                    return;
+                }
+                aiResponse.value = text;
+                aiResponse.removeAttribute('readonly');
+                alert("📎 Đã dán câu trả lời!");
+            }).catch(() => alert("Không thể dán."));
+        });
+
+        acceptBtn.addEventListener('click', () => {
+            const userText = userInput.value.trim();
+            const aiText = aiResponse.value.trim();
+            if (!userText || !aiText) {
+                alert("Hãy điền đầy đủ trước khi chấp nhận!");
+                return;
+            }
+            const userBubble = document.createElement('div');
+            userBubble.className = 'chat-bubble user';
+            userBubble.innerHTML = `<div class="avatar">👧</div><div class="message">${userText}</div>`;
+            chatHistory.appendChild(userBubble);
+
+            const aiBubble = document.createElement('div');
+            aiBubble.className = 'chat-bubble ai';
+            aiBubble.innerHTML = `<div class="avatar">🤖</div><div class="message">${aiText}</div>`;
+            chatHistory.appendChild(aiBubble);
+
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            userInput.value = '';
+            aiResponse.value = '';
+        });
+
+        clearChatBtn.addEventListener('click', () => {
+            if (confirm("Xóa toàn bộ lịch sử chat?")) {
+                chatHistory.innerHTML = '';
+                userInput.value = '';
+                aiResponse.value = '';
+                aiResponse.setAttribute('readonly', true);
+            }
+        });
+
+        editChatBtn.addEventListener('click', () => {
+            const bubbles = chatHistory.querySelectorAll('.chat-bubble');
+            if (bubbles.length === 0) {
+                alert("Chưa có hội thoại nào để sửa!");
+                return;
+            }
+            let conversation = "";
+            bubbles.forEach(bubble => {
+                const role = bubble.classList.contains('user') ? "👧 Bé:" : "🤖 AI:";
+                const message = bubble.querySelector('.message').textContent.trim();
+                conversation += `${role} ${message}\n`;
+            });
+            const prompt = `Sửa đoạn hội thoại sau cho đúng ngữ pháp, ngữ cảnh và phù hợp với học sinh tiểu học. Nếu hội thoại bằng tiếng Việt, dịch sang song ngữ Việt-Anh và sửa lỗi cả hai ngôn ngữ. Nếu hội thoại bằng tiếng Anh, dịch sang song ngữ Anh-Việt và sửa lỗi ngữ pháp cả hai ngôn ngữ. KHI ĐỌC TIẾNG ANH, CÁC CHỮ SỐ THÌ ĐỌC KIỂU TIẾNG ANH CHỨ KHÔNG ĐỌC KIỂU TIẾNG VIỆT, VÍ DỤ 3 ĐỌC KHI ĐỌC TIẾNG ANH THÌ ĐỌC LÀ THREE CHỨ KHÔNG ĐỌC LÀ BA\n\n${conversation}`;
+            const encodedPrompt = encodeURIComponent(prompt);
+            const editUrl = `https://chatgpt.com/?q=${encodedPrompt}&focus=true`;
+            window.open(editUrl, '_blank');
+        });
+
+        // --- Sự kiện
+        addWordBtn.addEventListener('click', addWord);
+        wordList.addEventListener('click', e => {
+            if (e.target.classList.contains('delete-btn')) {
+                deleteWord(e.target.dataset.index);
+            }
+        });
+        fillAnswerInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') checkFillBtn.click();
+        });
+
+        // --- Khởi tạo
+        sortWordsByLevel();
+        displayWords();
+    </script>
+</body>
+</html>

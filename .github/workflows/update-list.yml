@@ -1,0 +1,41 @@
+name: 🔄 Cập nhật danh sách bài học
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 * * * *'  # Chạy mỗi giờ
+
+jobs:
+  update-list:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 📂 Tạo danh sách các file HTML (trừ MAIN.html)
+        run: |
+          # Lọc các file HTML, loại trừ MAIN.html và không phân biệt hoa thường
+          find . -maxdepth 1 -name "*.html" | sed 's/^\.\///' | grep -v -i "MAIN.html" | sort > temp-files.txt
+
+          # Tạo file danh-sach.json
+          echo "[" > danh-sach.json
+          first=true
+          while IFS= read -r file; do
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> danh-sach.json
+            fi
+            # Escape ký tự đặc biệt nếu cần
+            safe_name=$(echo "$file" | sed 's/"/\\"/g')
+            echo "  {\"name\": \"$safe_name\", \"url\": \"https://maitheduy.github.io/TiengAnh6/$safe_name\"}" >> danh-sach.json
+          done < temp-files.txt
+          echo -e "\n]" >> danh-sach.json
+
+      - name: ✅ Commit và đẩy lên nếu có thay đổi
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add danh-sach.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "🔧 Cập nhật danh sách file tự động"
+          git push

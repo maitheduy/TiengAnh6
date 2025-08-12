@@ -57,49 +57,33 @@
   </div>
 
   <script>
-    // Cấu hình
-    const repoOwner = "maitheduy";
-    const repoName = "TiengAnh6";
-    const branch = "main"; // thường là 'main' hoặc 'master'
-    const currentPath = ""; // để trống vì lấy ở gốc thư mục
-    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${currentPath}`;
-
     async function loadFiles() {
       try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error("Lỗi kết nối GitHub API");
+        // Thêm tham số cache buster để tránh cache
+        const response = await fetch('danh-sach.json?' + new Date().getTime());
+        if (!response.ok) throw new Error("Không tìm thấy danh sách bài học (danh-sach.json)");
 
         const files = await response.json();
         const listContainer = document.getElementById("fileList");
-        listContainer.innerHTML = ""; // Xóa loading
+        listContainer.innerHTML = "";
 
-        // Lọc các file HTML (trừ MAIN.html)
-        const htmlFiles = files
-          .filter(file => 
-            file.name.endsWith(".html") && 
-            file.name.toLowerCase() !== "main.html"
-          )
-          .sort((a, b) => a.name.localeCompare(b.name));
-
-        if (htmlFiles.length === 0) {
+        if (files.length === 0) {
           listContainer.innerHTML = "<p>Không có bài học nào.</p>";
           return;
         }
 
-        htmlFiles.forEach(file => {
+        files.forEach(file => {
           const div = document.createElement("div");
           div.className = "file-item";
-          
           const a = document.createElement("a");
-          a.href = file.download_url; // Link trực tiếp đến file HTML
-          a.target = "_blank"; // Mở trong tab mới (an toàn hơn)
+          a.href = file.url;
+          a.target = "_blank"; // Mở trong tab mới
           a.textContent = `📄 ${file.name}`;
-          
           div.appendChild(a);
           listContainer.appendChild(div);
         });
       } catch (error) {
-        console.error("Lỗi khi tải danh sách file:", error);
+        console.error("Lỗi tải danh sách:", error);
         document.getElementById("fileList").innerHTML = 
           `<p style="color:red;">Lỗi: ${error.message}</p>`;
       }
@@ -108,8 +92,8 @@
     // Tải danh sách khi trang mở
     loadFiles();
 
-    // Tự động làm mới mỗi 1 phút (60 giây)
-    setInterval(loadFiles, 60000);
+    // Tự động làm mới mỗi 2 phút
+    setInterval(loadFiles, 120000);
   </script>
 </body>
 </html>

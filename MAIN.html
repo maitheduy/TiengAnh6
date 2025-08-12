@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📘 MAIN - Quản lý Tiếng Anh Lớp 6</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      background-color: #f7f9fc;
+      color: #333;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 10px;
+    }
+    #fileList {
+      max-width: 800px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .file-item {
+      margin: 10px 0;
+    }
+    .file-item a {
+      display: block;
+      padding: 12px 15px;
+      background: #ecf4ff;
+      color: #2980b9;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    .file-item a:hover {
+      background: #d4e7ff;
+      transform: translateX(5px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .loading {
+      text-align: center;
+      color: #7f8c8d;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>📘 MAIN - Danh sách Bài học Tiếng Anh Lớp 6</h1>
+  <div id="fileList">
+    <p class="loading">Đang tải danh sách bài học...</p>
+  </div>
+
+  <script>
+    // Cấu hình
+    const repoOwner = "maitheduy";
+    const repoName = "TiengAnh6";
+    const branch = "main"; // thường là 'main' hoặc 'master'
+    const currentPath = ""; // để trống vì lấy ở gốc thư mục
+    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${currentPath}`;
+
+    async function loadFiles() {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Lỗi kết nối GitHub API");
+
+        const files = await response.json();
+        const listContainer = document.getElementById("fileList");
+        listContainer.innerHTML = ""; // Xóa loading
+
+        // Lọc các file HTML (trừ MAIN.html)
+        const htmlFiles = files
+          .filter(file => 
+            file.name.endsWith(".html") && 
+            file.name.toLowerCase() !== "main.html"
+          )
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        if (htmlFiles.length === 0) {
+          listContainer.innerHTML = "<p>Không có bài học nào.</p>";
+          return;
+        }
+
+        htmlFiles.forEach(file => {
+          const div = document.createElement("div");
+          div.className = "file-item";
+          
+          const a = document.createElement("a");
+          a.href = file.download_url; // Link trực tiếp đến file HTML
+          a.target = "_blank"; // Mở trong tab mới (an toàn hơn)
+          a.textContent = `📄 ${file.name}`;
+          
+          div.appendChild(a);
+          listContainer.appendChild(div);
+        });
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách file:", error);
+        document.getElementById("fileList").innerHTML = 
+          `<p style="color:red;">Lỗi: ${error.message}</p>`;
+      }
+    }
+
+    // Tải danh sách khi trang mở
+    loadFiles();
+
+    // Tự động làm mới mỗi 1 phút (60 giây)
+    setInterval(loadFiles, 60000);
+  </script>
+</body>
+</html>

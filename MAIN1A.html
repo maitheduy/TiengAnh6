@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📘 MAIN - Danh sách Bài học</title>
+  <style>
+    :root {
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --card-hover: #1f2733;
+      --border: #30363d;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text);
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      color: #fff;
+      font-size: 2.2rem;
+      margin: 0.5rem 0;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    #fileList {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+      list-style: none;
+      padding: 0;
+    }
+
+    .file-item {
+      margin: 0;
+    }
+
+    .file-link {
+      display: block;
+      background-color: var(--bg-secondary);
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      text-align: left;
+    }
+
+    .file-link:hover {
+      background-color: var(--card-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .file-link::before {
+      content: "📄";
+      margin-right: 8px;
+    }
+
+    .loading {
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+    }
+
+    .error {
+      text-align: center;
+      color: #f87171;
+      padding: 1.5rem;
+      background-color: #331818;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📘 MAIN - Danh sách Bài học</h1>
+      <p class="subtitle">Click vào bài học để bắt đầu học ngay</p>
+    </header>
+
+    <main>
+      <ul id="fileList">
+        <li class="loading">Đang tải danh sách bài học...</li>
+      </ul>
+    </main>
+
+    <footer>
+      <p>© 2025 - Triển khai qua GitHub Pages</p>
+    </footer>
+  </div>
+
+  <script>
+    /**
+     * Hàm tải và hiển thị danh sách bài học từ danh-sach.json
+     */
+    async function loadFiles() {
+      const fileList = document.getElementById("fileList");
+      try {
+        // Thêm tham số để tránh cache
+        const response = await fetch('danh-sach.json?' + new Date().getTime());
+        
+        if (!response.ok) {
+          throw new Error(`Lỗi HTTP: ${response.status}`);
+        }
+
+        const files = await response.json();
+        fileList.innerHTML = ""; // Xóa trạng thái "loading"
+
+        if (!Array.isArray(files) || files.length === 0) {
+          fileList.innerHTML = `
+            <li class="error">Không có bài học nào trong danh sách.</li>
+          `;
+          return;
+        }
+
+        files.forEach(file => {
+          const li = document.createElement("li");
+          li.className = "file-item";
+
+          const a = document.createElement("a");
+          a.href = file.url;
+          a.className = "file-link";
+          a.target = "_blank";
+          a.textContent = file.name;
+
+          li.appendChild(a);
+          fileList.appendChild(li);
+        });
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách:", error);
+        fileList.innerHTML = `
+          <li class="error">
+            Không thể tải danh sách bài học.<br>
+            <small>Đảm bảo file <code>danh-sach.json</code> tồn tại và đúng định dạng.</small>
+          </li>`;
+      }
+    }
+
+    // Tải danh sách khi trang mở
+    loadFiles();
+
+    // Tự động làm mới mỗi 2 phút
+    setInterval(loadFiles, 120000); // 2 phút
+  </script>
+</body>
+</html>
